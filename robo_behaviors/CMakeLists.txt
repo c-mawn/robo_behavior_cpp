@@ -12,12 +12,13 @@ find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(neato2_interfaces REQUIRED)# uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 add_executable(path_follow src/path_follow.cpp)
-ament_target_dependencies(path_follow rclcpp std_msgs geometry_msgs sensor_msgs neato2_interfaces)
+ament_target_dependencies(path_follow rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs neato2_interfaces)
 target_include_directories(path_follow PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
