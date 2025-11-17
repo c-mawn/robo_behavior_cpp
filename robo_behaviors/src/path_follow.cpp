@@ -24,11 +24,15 @@ using namespace std::chrono_literals;
 class path_follow : public rclcpp::Node{
   public:
     path_follow() : Node("path_follow"){
-      //create timer and publisher for controlling neato
+      //create timer, publishers, and subscriber for controlling neato
       vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
       viz_pub_ = this->create_publisher<visualization_msgs::msg::Marker>("/viz", 10);
       timer_ = this->create_wall_timer(500ms, std::bind(&path_follow::run_loop, this));
       odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>("/odom", 10, std::bind(&path_follow::odom_callback, this, std::placeholders::_1));
+
+      //create ros params for tuning gain
+      this->declare_parameter("lin_gain", 0.1);
+      this->declare_parameter("ang_gain", 0.5);
     }
   
   private:
@@ -56,9 +60,9 @@ class path_follow : public rclcpp::Node{
     double current_y = 0.0;
     double current_theta = 0.0; //in rad
 
-    //controller gains
-    double linear_gain = 0.1;
-    double angular_gain = 0.5;
+    //controller gains, defaulted to 0.1, 0.5; ros params changable in terminal
+    double linear_gain = this->get_parameter("lin_gain").as_double();
+    double angular_gain = this->get_parameter("ang_gain").as_double();
 
     //distance threshold to decide whether we are close enough to the waypoint to continue
     double distance_threshold = 0.1;
@@ -97,6 +101,10 @@ class path_follow : public rclcpp::Node{
     void run_loop(){
       // creates velocity message to be populated
       auto vel = geometry_msgs::msg::Twist();
+
+      //update lin and ang gain from parameters
+      linear_gain = this->get_parameter("lin_gain").as_double();
+      angular_gain = this->get_parameter("ang_gain").as_double();
 
       //check if path is completed (went to all waypoints)
       if(current_waypoint >= path.size()){
