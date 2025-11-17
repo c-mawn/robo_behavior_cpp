@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(robo_behaviors)
+project(person_follower)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -12,20 +12,20 @@ find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(nav_msgs REQUIRED)
-find_package(visualization_msgs REQUIRED)
-find_package(neato2_interfaces REQUIRED)# uncomment the following section in order to fill in
+find_package(neato2_interfaces REQUIRED)
+
+# uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(path_follow src/path_follow.cpp)
-ament_target_dependencies(path_follow rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs visualization_msgs neato2_interfaces)
-target_include_directories(path_follow PUBLIC
+add_executable(pfollow src/pfollow.cpp)
+ament_target_dependencies(pfollow rclcpp std_msgs geometry_msgs sensor_msgs neato2_interfaces)
+target_include_directories(pfollow PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(path_follow PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(pfollow PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS path_follow
+install(TARGETS pfollow
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
