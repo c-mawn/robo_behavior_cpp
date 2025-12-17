@@ -42,3 +42,35 @@ Then, in a new terminal, run the person follower:
 ros2 run robo_behaviors path_follow
 ```
 
+## Demo
+
+### Person Following 
+<iframe width="1020" height="630" src="https://www.youtube.com/embed/7QHE4I6VIrI?si=vJoSfSoesd86VSzt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>Demo Video of Person Following</iframe>
+
+#### Implementation
+
+To implement person following behavior, I utilized the Lidar on the neato, to track the nearest objest (Imagining that the closest object is a person). To do this, I took in the data from each lidar scan as a subscriber, then filtered out all the extra data (anything farther than 1 meter, or closer than 50 cm). I then take the average location of remaining lidar points, to find a destination. I publish commands to the neato to drive towards that destination using PID. 
+
+### Path Following Demo
+<iframe width="1020" height="630" src="https://www.youtube.com/embed/aoCDR-20jis?si=WJxjKf3AWofz-Lkx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>Demo Vide of Path Following</iframe>
+
+#### Implementation
+To implement a path following controller, I assumed that the goal poses were given (which could be from something like A*, but I didn't do that here), then calculate the path from the current pose to the goal pose. I then publish commands to tell the Neato to drive to the next goal pose. 
+
+## About
+
+This project was a part of my independent student research (isr), Fall 2025 at Olin College. 
+
+My goals with this project were to
+- Get a better understand of C++
+- Learn how to use C++ with ROS2
+- Create a project that would be fun to show others
+
+The hardest part of this project for me was learning C++. I had essentially no C++ experience before doing this, so I really had to learn it from the ground up. I was already familiar with ROS2 before this project, which I believe gave me a really good jumping off point for learning C++. The best method for learning C++ I used for this was writing the basic outline of a pubsub line by line. It helped me map out all the ROS2 stuffs that I knew from python over to C++. It helped me figure out how objects are referenced, how functions take inputs, and how to use a pointer. Overall, having a project to learn C++ was much better than trying to learn it from a random website (like how I usually learn new languages). 
+
+In the future, I would like to keep working on this, and I have a few ideas of how to continue. 
+- I would like to refactor a lot of this code now that I am getting a grasp of C++. I have a lot of really messy stuff in here, which I would like to clean up. Some of which is already being done. 
+- I would like to use this package as a learning environment for myself in the future. I have a small amount of experience in a lot of different sections of robotics, and I want to get better at those by stitching them into this code. For example, I would love to get more experience implementing computer vision stuff, localization stuff, path planning, SLAM based things, and more complex controls theories.
+
+
+
